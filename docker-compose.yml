@@ -1,0 +1,54 @@
+version: "3.3"
+
+services:
+  web-react:
+    container_name: "web-react"
+   
+    build: ./backend
+    ports:
+      - "3000:3000"
+   
+    networks:
+      - local-net
+    links:
+      - api
+
+
+  
+   # FastAPI
+  api:
+
+   
+    container_name: "api"
+  
+    build: ./backend
+    ports:
+      - "8000:8000"
+
+    networks:
+      - local-net
+    links:
+      - db
+
+  # MySQL
+  db:
+    container_name: "db"
+    
+    image: mysql:latest
+    
+    restart: always
+    tty: true
+    environment:
+      MYSQL_DATABASE: test
+      MYSQL_PASSWORD: password 
+      MYSQL_ROOT_PASSWORD: password 
+    ports:
+      - "3306:3306"
+    networks:
+      - local-net    
+
+
+networks:
+  local-net:
+    driver: bridge
+      
